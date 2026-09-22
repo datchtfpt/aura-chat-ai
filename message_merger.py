@@ -29,10 +29,13 @@ def merge_message(lines, gap_ratio=0.5):
 
     merged_message.append(current)  # Thêm nhóm cuối cùng
 
-    # Nối text các dòng trong cùng một nhóm lại
+    # Nối text các dòng trong cùng một nhóm lại, giữ key 'side' nếu có
     messages = []
     for msg in merged_message:
         text = " ".join(line["text"] for line in msg)
-        messages.append(text.strip())
+        result = {"text": text.strip()}
+        if "side" in msg[0]:
+            result["side"] = msg[0]["side"]
+        messages.append(result)
 
     return messages

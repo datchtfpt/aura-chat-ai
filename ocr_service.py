@@ -1,9 +1,11 @@
 from ocr_reader import extract_text
 from line_merger import merge_same_line
 from message_merger import merge_message
+from get_side import get_image_width, label_sides
 
 if __name__ == "__main__":
-    test_image = "screenshot_mess_02.png"
+    test_image = "screenshot_mess_01.png"
+
     blocks = extract_text(test_image)
 
     print("\n--- BƯỚC 1: KẾT QUẢ OCR THÔ ---")
@@ -23,4 +25,12 @@ if __name__ == "__main__":
     print("\n--- BƯỚC 3: GOM CÁC DÒNG THÀNH TIN NHẮN (merge_message) ---")
     messages = merge_message(merged_lines)
     for i, msg in enumerate(messages):
-        print(f"[{i+1}] {msg}")
+        print(f"[{i+1}] {msg['text']}")
+
+    print("\n--- BƯỚC 4: GÁN NHÃN TRÁI/PHẢI ---")
+    labeled = label_sides(merged_lines, get_image_width(test_image))
+    labeled_msgs = merge_message(labeled)
+    print("\n--- HỘI THOẠI ---")
+    for lmsg in labeled_msgs:
+        label = "MÌNH      " if lmsg["side"] == "right" else "ĐỐI PHƯƠNG"
+        print(f"[{label}] {lmsg['text']}")
