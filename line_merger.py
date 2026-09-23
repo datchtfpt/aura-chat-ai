@@ -22,9 +22,10 @@ def merge_same_line(blocks, overlap_threshold=0.5):
     for b in blocks:
         items.append({
             "text": b["text"],
-            "x_left": b["bbox"]["top_left"][0],
-            "y_top": b["bbox"]["top_left"][1],
-            "y_bottom": b["bbox"]["bottom_left"][1],
+            "x_left":  b["bbox"]["top_left"][0],
+            "x_right": b["bbox"]["top_right"][0],  # thêm để is_timestamp dùng
+            "y_top":   b["bbox"]["top_left"][1],
+            "y_bottom":b["bbox"]["bottom_left"][1],
         })
     items.sort(key=lambda item: item["x_left"])
 
@@ -51,10 +52,12 @@ def merge_same_line(blocks, overlap_threshold=0.5):
     for row in rows:
         text = " ".join(item["text"] for item in row)
         merged_lines.append({
-            "text": text.strip(),
-            "y_top": min(item["y_top"] for item in row),
-            "y_bottom": max(item["y_bottom"] for item in row),
-            "x_center": sum(item["x_left"] for item in row) // len(row),
+            "text":    text.strip(),
+            "y_top":   min(item["y_top"]   for item in row),
+            "y_bottom":max(item["y_bottom"] for item in row),
+            "x_center":sum(item["x_left"]  for item in row) // len(row),
+            "x_left":  min(item["x_left"]  for item in row),
+            "x_right": max(item["x_right"] for item in row),
         })
 
     return merged_lines

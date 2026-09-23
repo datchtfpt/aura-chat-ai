@@ -4,7 +4,7 @@ from message_merger import merge_message
 from get_side import get_image_width, label_sides
 
 if __name__ == "__main__":
-    test_image = "screenshot_mess_01.png"
+    test_image = "screenshot_mess_02.png"
 
     blocks = extract_text(test_image)
 
@@ -32,5 +32,10 @@ if __name__ == "__main__":
     labeled_msgs = merge_message(labeled)
     print("\n--- HỘI THOẠI ---")
     for lmsg in labeled_msgs:
-        label = "MÌNH      " if lmsg["side"] == "right" else "ĐỐI PHƯƠNG"
+        if lmsg["side"] == "timestamp":
+            label = "THỜI GIAN "
+        elif lmsg["side"] == "right":
+            label = "MÌNH      "
+        else:
+            label = "ĐỐI PHƯƠNG"
         print(f"[{label}] {lmsg['text']}")
