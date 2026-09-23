@@ -2,9 +2,10 @@ from ocr_reader import extract_text
 from line_merger import merge_same_line
 from message_merger import merge_message
 from get_side import get_image_width, label_sides
+from pathlib import Path
 
 if __name__ == "__main__":
-    test_image = "screenshot_mess_02.png"
+    test_image = str(Path("images") / "screenshot_mess_01.png")
 
     blocks = extract_text(test_image)
 
@@ -33,9 +34,9 @@ if __name__ == "__main__":
     print("\n--- HỘI THOẠI ---")
     for lmsg in labeled_msgs:
         if lmsg["side"] == "timestamp":
-            label = "THỜI GIAN "
+            label = "== TIME =="
         elif lmsg["side"] == "right":
-            label = "MÌNH      "
+            label = "   MÌNH   "
         else:
             label = "ĐỐI PHƯƠNG"
         print(f"[{label}] {lmsg['text']}")

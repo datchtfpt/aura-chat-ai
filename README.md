@@ -7,7 +7,7 @@
 ---
 
 ## 🎯 Giới Thiệu
-![alt text](<Screenshot 2026-09-22 at 14.57.59.png>)
+![alt text](<images/Screenshot 2026-09-22 at 14.57.59.png>)
 **AuraChatAI** là một công cụ AI hỗ trợ soạn tin nhắn/ý tưởng thông minh, được xây dựng để giải quyết một vấn đề rất thực tế:
 
 > *"Em ăn cơm chưa..."*
