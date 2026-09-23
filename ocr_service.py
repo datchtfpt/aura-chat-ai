@@ -3,9 +3,11 @@ from line_merger import merge_same_line
 from message_merger import merge_message
 from get_side import get_image_width, label_sides
 from pathlib import Path
+from llm.formatter import format_conversation
+from llm.client import analyze_conversation
 
 if __name__ == "__main__":
-    test_image = str(Path("images") / "screenshot_mess_01.png")
+    test_image = str(Path("images") / "screenshot_mess_02.png")
 
     blocks = extract_text(test_image)
 
@@ -40,3 +42,19 @@ if __name__ == "__main__":
         else:
             label = "ĐỐI PHƯƠNG"
         print(f"[{label}] {lmsg['text']}")
+
+    print("\n--- BƯỚC 5: GỢI Ý TIN NHẮN TỪ AI ---")
+    conversation_text = format_conversation(labeled_msgs)
+    print("Đoạn hội thoại gửi cho AI:\n" + conversation_text)
+    print("\nĐang phân tích...")
+    result = analyze_conversation(conversation_text)
+
+    if result:
+        print(f"\n📋 Tóm tắt: {result['summary']}\n")
+        for s in result["suggestions"]:
+            purpose_label = {
+                "giu_nhip":     "🟢 Giữ nhịp   ",
+                "dao_sau":      "🔵 Đào sâu    ",
+                "tao_diem_nhan":"🟡 Tạo điểm nhấn",
+            }.get(s["purpose"], s["purpose"])
+            print(f"[{purpose_label}] {s['reply']}")

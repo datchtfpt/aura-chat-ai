@@ -8,6 +8,13 @@ def get_image_width(image_path):
 
 
 def get_side(line, image_width, threshold_ratio=0.55):
+    """
+    Dùng x_center để phân loại trái/phải.
+
+    x_center = (x_left + x_right) / 2 — tâm thực sự của bounding box.
+    Giá trị này ổn định hơn x_left hay x_right đơn lẻ vì nó trung hòa
+    ảnh hưởng của tin nhắn dài.
+    """
     mid = image_width * threshold_ratio
     if line["x_center"] > mid:
         return "right"

@@ -55,7 +55,7 @@ def merge_same_line(blocks, overlap_threshold=0.5):
             "text":    text.strip(),
             "y_top":   min(item["y_top"]   for item in row),
             "y_bottom":max(item["y_bottom"] for item in row),
-            "x_center":sum(item["x_left"]  for item in row) // len(row),
+            "x_center":(min(item["x_left"] for item in row) + max(item["x_right"] for item in row)) // 2,
             "x_left":  min(item["x_left"]  for item in row),
             "x_right": max(item["x_right"] for item in row),
         })
