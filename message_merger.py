@@ -33,7 +33,13 @@ def merge_message(lines, gap_ratio=0.5):
     messages = []
     for msg in merged_message:
         text = " ".join(line["text"] for line in msg)
-        result = {"text": text.strip()}
+        result = {
+            "text": text.strip(),
+            "y_top": msg[0]["y_top"],
+            "y_bottom": msg[-1]["y_bottom"],
+            "x_left": min(line["x_left"] for line in msg),
+            "x_right": max(line["x_right"] for line in msg)
+        }
         if "side" in msg[0]:
             result["side"] = msg[0]["side"]
         messages.append(result)

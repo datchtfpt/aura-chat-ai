@@ -1,19 +1,21 @@
 def format_conversation(messages):
     """
-    Chuyển danh sách tin nhắn đã gán nhãn thành chuỗi hội thoại để đưa vào LLM.
+    Chuyển danh sách tin nhắn thành chuỗi hội thoại để đưa vào LLM.
 
-    Input : output của merge_message() — list[{text, side}]
-             side có thể là: 'right' (mình), 'left' (đối phương), 'timestamp'
-    Output: chuỗi hội thoại dạng:
-             Tôi: ...
-             Đối phương: ...
+    Hỗ trợ 2 loại message:
+        - Tin thường:   {"text": "...", "side": "left/right"}
+        - Tin reply:    {"text": "...", "side": "...", "label": "...", "quoted": "..."}
     """
     lines = []
     for m in messages:
         if m["side"] == "timestamp":
-            continue  # bỏ qua mốc thời gian, không đưa vào ngữ cảnh
+            continue
 
         speaker = "Tôi" if m["side"] == "right" else "Đối phương"
-        lines.append(f"{speaker}: {m['text']}")
+
+        if m.get("label"):
+            lines.append(f'{speaker}: {m["label"]}: {m["quoted"]} -> {m["text"]}')
+        else:
+            lines.append(f"{speaker}: {m['text']}")
 
     return "\n".join(lines)
